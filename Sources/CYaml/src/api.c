@@ -1,6 +1,12 @@
 
 #include "yaml_private.h"
 
+#if _WIN32
+#define cyaml__strdup _strdup
+#else
+#define cyaml__strdup strdup
+#endif
+
 /*
  * Allocate a dynamic memory block.
  */
@@ -41,7 +47,7 @@ yaml_strdup(const yaml_char_t *str)
     if (!str)
         return NULL;
 
-    return (yaml_char_t *)strdup((char *)str);
+    return (yaml_char_t *)cyaml__strdup((char *)str);
 }
 
 /*
