@@ -63,9 +63,9 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - uses: seanmiddleditch/gha-setup-vsdevenv@master
-      - name: Install swift-DEVELOPMENT-SNAPSHOT-2021-02-18-a
+      - name: Install swift-5.4
         run: |
-          Install-Binary -Url "https://swift.org/builds/development/windows10/swift-DEVELOPMENT-SNAPSHOT-2021-02-18-a/swift-DEVELOPMENT-SNAPSHOT-2021-02-18-a-windows10.exe" -Name "installer.exe" -ArgumentList ("-q")
+          Install-Binary -Url "https://swift.org/builds/swift-5.4-release/windows10/swift-5.4-RELEASE/swift-5.4-RELEASE-windows10.exe" -Name "installer.exe" -ArgumentList ("-q")
       - name: Set Environment Variables
         run: |
           echo "SDKROOT=C:\Library\Developer\Platforms\Windows.platform\Developer\SDKs\Windows.sdk" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append
@@ -80,20 +80,6 @@ jobs:
           Copy-Item "$env:SDKROOT\usr\share\visualc.modulemap" -destination "$env:VCToolsInstallDir\include\module.modulemap"
           Copy-Item "$env:SDKROOT\usr\share\visualc.apinotes" -destination "$env:VCToolsInstallDir\include\visualc.apinotes"
           Copy-Item "$env:SDKROOT\usr\share\winsdk.modulemap" -destination "$env:UniversalCRTSdkDir\Include\$env:UCRTVersion\um\module.modulemap"
-      # Commands to run once connected via SSH:
-      #
-      # >d:
-      # >cd a\Yams\Yams
-      # >setx SDKROOT C:\Library\Developer\Platforms\Windows.platform\Developer\SDKs\Windows.sdk
-      # >setx DEVELOPER_DIR C:\Library\Developer
-      # >swift build -v
-      # >swift test -v
-      # >swift test -v --filter testBinary
-      # - name: Start SSH session
-      #   uses: luchihoratiu/debug-via-ssh@main
-      #   with:
-      #     NGROK_AUTH_TOKEN: ${{ secrets.NGROK_AUTH_TOKEN }}
-      #     SSH_PASS: ${{ secrets.SSH_PASS }}
       - name: Build
         run: swift build -v
       - name: Test
